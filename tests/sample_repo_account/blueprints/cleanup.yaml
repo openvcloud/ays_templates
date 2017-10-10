@@ -1,0 +1,13 @@
+g8client__env:
+    url: '<url>'
+    login: '<login>'
+    password: '<password>'
+
+uservdc__usertest:
+
+account__acc:
+
+actions:
+   - action: uninstall
+     service: acc
+     service: usertest
