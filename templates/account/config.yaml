@@ -18,9 +18,4 @@ links:
     max: 100
     min: 0
     role: g8client
-  - argname: accountusers
-    auto: false
-    max: 100
-    min: 0
-    role: uservdc
 recurring: []

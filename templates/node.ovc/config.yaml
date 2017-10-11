@@ -38,11 +38,6 @@ links:
     max: 100
     min: '1'
     role: sshkey
-  - argname: uservdc
-    auto: false
-    max: 100
-    min: 0
-    role: uservdc
   parent:
     auto: true
     optional: false
