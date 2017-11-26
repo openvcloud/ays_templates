@@ -5,7 +5,7 @@ def _get_cloud_space(service):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
     return space
@@ -435,7 +435,7 @@ def export(job):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue export of %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
 
@@ -698,7 +698,7 @@ def clone(job):
         raise j.exceptions.RuntimeError("No producer g8client found. Cannot continue clone of %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
 
@@ -735,7 +735,7 @@ def attach_external_network(job):
         raise j.exceptions.RuntimeError("No producer g8client found. Cannot continue attaching external network to %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
 
@@ -756,7 +756,7 @@ def detach_external_network(job):
         raise j.exceptions.RuntimeError("No producer g8client found. Cannot continue detaching external network from %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
 
@@ -786,7 +786,7 @@ def list_snapshots(job):
         raise j.exceptions.RuntimeError("No producer g8client found. Cannot continue creating snapshot of %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
 
@@ -811,7 +811,7 @@ def snapshot(job):
         raise j.exceptions.RuntimeError("No producer g8client found. Cannot continue creating snapshot of %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
 
@@ -833,7 +833,7 @@ def rollback_snapshot(job):
         raise j.exceptions.RuntimeError("No producer g8client found. Cannot continue creating snapshot of %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
 
@@ -858,7 +858,7 @@ def delete_snapshot(job):
         raise j.exceptions.RuntimeError("No producer g8client found. Cannot continue creating snapshot of %s" % service)
 
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
 

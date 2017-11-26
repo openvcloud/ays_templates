@@ -40,7 +40,7 @@ def test_create(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_id = vm.model.data.machineId
@@ -72,7 +72,7 @@ def test_delete(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_name = vm.name
@@ -101,7 +101,7 @@ def test_node_disks(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_id = vm.model.data.machineId
@@ -130,7 +130,7 @@ def test_attach_external_network(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_id = vm.model.data.machineId
@@ -158,7 +158,7 @@ def test_detach_external_network(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_id = vm.model.data.machineId
@@ -186,7 +186,7 @@ def test_clone(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_id = vm.model.data.machineId
@@ -233,7 +233,7 @@ def test_snapshot(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_id = vm.model.data.machineId
@@ -261,7 +261,7 @@ def test_list_snapshots(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_id = vm.model.data.machineId
@@ -293,7 +293,7 @@ def test_delete_snapshot(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vm = service.producers['node'][0]
         vm_id = vm.model.data.machineId

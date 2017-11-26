@@ -7,7 +7,7 @@ def test_user_access(job):
     failures = []
     try:
         service.model.data.result = RESULT_OK
-        openv_client = j.clients.openvcloud.getFromService(service.producers.get('g8client')[0])
+        openv_client = j.clients.openvcloud.getFromAYSService(service.producers.get('g8client')[0])
         vdc_srv = service.producers.get('vdc')[0]
         for vdc in openv_client.api.cloudapi.cloudspaces.list():
             if vdc['name'] == vdc_srv.name:
@@ -36,7 +36,7 @@ def test_delete_user_access(job):
     failures = []
     try:
         service.model.data.result = RESULT_OK
-        openv_client = j.clients.openvcloud.getFromService(service.producers.get('g8client')[0])
+        openv_client = j.clients.openvcloud.getFromAYSService(service.producers.get('g8client')[0])
         vdc_srv = service.producers.get('vdc')[0]
         for vdc in openv_client.api.cloudapi.cloudspaces.list():
             if vdc['name'] == vdc_srv.name:
@@ -45,7 +45,7 @@ def test_delete_user_access(job):
             raise RuntimeError('No matching cloudspace found')
         # after deleting the all the users access rights, only the owner of cloudspace should have access right
         if len(vdc['acl']) > 1:
-            service.model.data.result = RESULT_FAILED % 'Unconfigured users have access to cloudspade [%s]' % vdc['name'] 
+            service.model.data.result = RESULT_FAILED % 'Unconfigured users have access to cloudspade [%s]' % vdc['name']
     except Exception as e:
         service.model.data.result = RESULT_ERROR % (str(sys.exc_info()[:2]) + str(e))
     finally:

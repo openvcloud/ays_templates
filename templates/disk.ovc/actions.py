@@ -27,7 +27,7 @@ def init(job):
 def create(job):
     service = job.service
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromService(g8client)
+    client = j.clients.openvcloud.getFromAYSService(g8client)
     account = client.account_get(g8client.model.data.account, create=True)
     for loc in client.locations:
         if loc['name'] == service.model.data.location:
@@ -50,7 +50,7 @@ def create(job):
 def delete(job):
     service = job.service
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromService(g8client)
+    client = j.clients.openvcloud.getFromAYSService(g8client)
     account = client.account_get(g8client.model.data.account, create=True)
     for disk in account.disks:
         if disk['id'] == service.model.data.diskId:
@@ -76,7 +76,7 @@ def limit_io(job):
     service = job.service
     g8client = service.producers["g8client"][0]
     data = service.model.data
-    client = j.clients.openvcloud.getFromService(g8client)
+    client = j.clients.openvcloud.getFromAYSService(g8client)
     account = client.account_get(g8client.model.data.account, create=True)
     for disk in account.disks:
         if disk['id'] == service.model.data.diskId:

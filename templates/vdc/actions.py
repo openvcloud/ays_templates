@@ -78,7 +78,7 @@ def install(job):
     if 'g8client' not in service.producers:
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue install of %s" % service)
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(service.model.data.account)
 
     # Set limits
@@ -136,7 +136,7 @@ def processChange(job):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue processChange of %s" % service)
     g8client = service.producers["g8client"][0]
 
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(service.model.data.account)
 
     # Get given space, raise error if not found
@@ -184,7 +184,7 @@ def uninstall(job):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue uninstall of %s" % service)
 
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(service.model.data.account)
     space = acc.space_get(service.model.dbobj.name, service.model.data.location)
     space.delete()
@@ -199,7 +199,7 @@ def enable(job):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue enabling  %s" % service)
 
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(service.model.data.account)
     # Get space, raise error if not found
     space = acc.space_get(name=service.model.dbobj.name,
@@ -219,7 +219,7 @@ def disable(job):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue disabling  %s" % service)
 
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(service.model.data.account)
     # Get space, raise error if not found
     space = acc.space_get(name=service.model.dbobj.name,
@@ -239,7 +239,7 @@ def execute_routeros_script(job):
         raise j.exceptions.AYSNotFound("Param script can't be empty. Cannot continue executing of %s" % service)
     script.replace("\n", ";")
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(service.model.data.account)
     space = acc.space_get(service.model.dbobj.name, service.model.data.location)
     space.execute_routeros_script(script)

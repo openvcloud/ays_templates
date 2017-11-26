@@ -47,7 +47,7 @@ def test(job):
         log.info('Create another data disk (vdc) and set max_iops to 1000')
         vdc = vm.producers['vdc'][0]
         g8client = vdc.producers["g8client"][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
         acc = client.account_get(vdc.model.data.account)
         space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
         machine = space.machines[vm.name]

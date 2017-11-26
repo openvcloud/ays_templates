@@ -12,7 +12,7 @@ def install(job):
     password = password if not provider else "fakeeeee"
 
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromService(g8client)
+    client = j.clients.openvcloud.getFromAYSService(g8client)
     if not client.api.system.usermanager.userexists(name=username):
         groups = service.model.data.groups
         client.api.system.usermanager.create(username=username, password=password, groups=groups, emails=[email], domain='', provider=provider)
@@ -21,7 +21,7 @@ def install(job):
 def processChange(job):
     service = job.service
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromService(g8client)
+    client = j.clients.openvcloud.getFromAYSService(g8client)
     old_args = service.model.data
     new_args = job.model.args
     # Process Changing Groups
@@ -45,7 +45,7 @@ def uninstall(job):
     # unauthorize user to all consumed vdc
     username = service.model.dbobj.name
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromService(g8client)
+    client = j.clients.openvcloud.getFromAYSService(g8client)
     provider = service.model.data.provider
     username = "%s@%s" % (username, provider) if provider else username
     if client.api.system.usermanager.userexists(name=username):
