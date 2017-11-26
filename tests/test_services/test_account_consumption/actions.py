@@ -36,7 +36,7 @@ def test(job):
 
         account = service.producers['account'][0]
         accountData = account.model.data
-        cl = j.clients.openvcloud.getFromService(g8client)
+        cl = j.clients.openvcloud.getFromAYSService(g8client)
         acc = cl.account_get(account.model.dbobj.name)
         space = acc.space_get('%sVdcConsumption' % account.model.dbobj.name, g8client.model.data.url.split('.')[0])
         while space.model['status'] != 'DEPLOYED':
@@ -57,7 +57,7 @@ def test(job):
         if 'g8client' in service.producers and 'account' in service.producers:
             session = authenticate(service.producers['g8client'][0])
             account = service.producers['account'][0]
-            cl = j.clients.openvcloud.getFromService(g8client)
+            cl = j.clients.openvcloud.getFromAYSService(g8client)
             acc = cl.account_get(account.model.dbobj.name)
             space = acc.space_get('%sVdcConsumption' % account.model.dbobj.name, g8client.model.data.url.split('.')[0])
             space.delete()

@@ -25,7 +25,7 @@ def test_create(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vdc = service.producers['vdc'][0]
         vdc_id = vdc.model.data.cloudspaceID
@@ -52,7 +52,7 @@ def test_delete(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vdc = service.producers['vdc'][0]
         vdc_id = vdc.model.data.cloudspaceID
@@ -78,7 +78,7 @@ def test_enable(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vdc = service.producers['vdc'][0]
         vdc_id = vdc.model.data.cloudspaceID
@@ -105,7 +105,7 @@ def test_disable(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromService(g8client)
+        client = j.clients.openvcloud.getFromAYSService(g8client)
 
         vdc = service.producers['vdc'][0]
         vdc_id = vdc.model.data.cloudspaceID
@@ -133,7 +133,7 @@ def test_routeros(job):
 
     service = job.service
     g8client = service.producers['g8client'][0]
-    client = j.clients.openvcloud.getFromService(g8client)
+    client = j.clients.openvcloud.getFromAYSService(g8client)
     vdc = service.producers['vdc'][0]
     vdc_id = vdc.model.data.cloudspaceID
     cloud_space = client.api.cloudapi.cloudspaces.get(cloudspaceId=vdc_id)

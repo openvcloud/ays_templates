@@ -2,7 +2,7 @@ def install(job):
     service = job.service
     vdc = service.producers["vdc"][0]
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromService(g8client)
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
     acc = cl.account_get(vdc.model.data.account)
     # if space does not exist, it will create it
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
