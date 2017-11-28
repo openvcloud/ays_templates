@@ -16,12 +16,14 @@ def _create_machine(service, space):
     image_names = [i['name'] for i in space.images]
     if service.model.data.osImage not in image_names:
         raise j.exceptions.NotFound('Image %s not available for vdc %s' % (service.model.data.osImage, vdc.name))
+    sshName = service.producers.get('sshkey')[0].name
     machine = space.machine_create(name=service.name,
                                    image=service.model.data.osImage,
                                    memsize=service.model.data.memory,
                                    disksize=service.model.data.bootdiskSize,
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
-                                   stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None)
+                                   stackId=o.model.data.stackID if service.model.data.stackID >= 0 else None,
+                                   sshkeyname=sshName)
     return machine
 
 
@@ -31,14 +33,14 @@ def _configure_ports(service, machine):
     # check if the machine was created before and has a port forward
     # for port 22 to avoid multiple port forward for the same port
     if not ssh_present:
-        for port_forward in machine.portforwardings:
+        for port_forward in machine.portforwards:
             if int(port_forward["localPort"]) == 22:
                 ssh_present = True
                 break
 
     data = j.data.serializer.json.loads(service.model.dataJSON)
     ports = data.get('ports', []) if ssh_present else data.get('ports', []) + ['22']
-    forwarded_ports = machine.portforwardings
+    forwarded_ports = machine.portforwards
     for port in ports:
         skip = False
         port_parts = port.split(':')
@@ -58,7 +60,7 @@ def _configure_ports(service, machine):
 
     # Get all created ports forwarding (from current model + previously created if any)
     ports = []
-    for port_forward in machine.portforwardings:
+    for port_forward in machine.portforwards:
         port_added = "{public}:{local}".format(public=port_forward["publicPort"], local=port_forward["localPort"])
         ports.append(port_added)
 
@@ -79,7 +81,7 @@ def _configure_ports(service, machine):
 def _check_ssh_authorization(service, machine):
     if not service.model.data.sshAuthorized:
         # Authorize ssh key into the machine
-        _, vm_info = machine.get_machine_ip()
+        _, vm_info = machine.machineip_get()
         if vm_info['status'] not in ['HALTED', 'PAUSED']:
             prefab = _ssh_authorize(service, vm_info)
             return prefab
@@ -96,11 +98,11 @@ def _ssh_authorize(service, vm_info):
     password = vm_info['accounts'][0]['password'] if vm_info['accounts'][0]['password'] != '' else None
     # used the login/password information from the node to first connect to the node and
     # then authorize the sshkey for root
+
     executor = j.tools.executor.getSSHBased(addr=service.model.data.ipPublic, port=service.model.data.sshPort,
-                                            login=vm_info['accounts'][0]['login'], passwd=password,
-                                            allow_agent=True, look_for_keys=True, timeout=5, usecache=False,
-                                            passphrase=None, key_filename=key_path)
-    executor.prefab.ssh.authorize("root", sshkey.model.data.keyPub)
+                                            timeout=5, usecache=False)
+
+    executor.prefab.system.ssh.authorize("root", sshkey.model.data.keyPub)
     service.model.data.sshAuthorized = True
     service.saveAll()
     return executor.prefab
@@ -113,7 +115,7 @@ def _configure_disks(service, machine, prefab):
         disk_name = disk.model.dbobj.name
         if disk_name not in machine_disks:
             disk_args = disk.model.data
-            disk_args.diskId = machine.add_disk(name=disk.name,
+            disk_args.diskId = machine.disk_add(name=disk.name,
                                                 description=disk_args.description,
                                                 size=disk_args.size,
                                                 type=disk_args.type.upper(),
@@ -259,7 +261,7 @@ def install(job):
         authorization_user(machine, service)
 
         # set machine id, ip, login data
-        ip, vm_info = machine.get_machine_ip()
+        ip, vm_info = machine.machineip_get()
         if not ip:
             raise j.exceptions.RuntimeError('The machine %s does not get an IP ' % service.name)
 
@@ -276,7 +278,7 @@ def install(job):
         if prefab:
             _configure_disks(service, machine, prefab)
 
-        _, vm_info = machine.get_machine_ip()
+        _, vm_info = machine.machineip_get()
         if service.model.data.vmInfoCallback:
             requests.post(service.model.data.vmInfoCallback, headers={'Content-type': 'application/json'}, data=json.dumps(vm_info))
 
@@ -360,7 +362,7 @@ def processChange(job):
 
                 # Get all created ports forwarding to save it in the model
                 all_ports = []
-                for port_forward in machine.portforwardings:
+                for port_forward in machine.portforwards:
                     port_added = "{public}:{local}".format(public=port_forward["publicPort"],
                                                            local=port_forward["localPort"])
                     all_ports.append(port_added)
@@ -605,7 +607,7 @@ def open_port(job):
 
     # check if already open, if yes return public port
     spaceport = None
-    for pf in machine.portforwardings:
+    for pf in machine.portforwards:
         if pf['localPort'] == requested_port:
             spaceport = pf['publicPort']
             break
@@ -615,7 +617,7 @@ def open_port(job):
     if spaceport is None:
         if public_port is None:
             # reach that point, the port is not forwarded yet
-            unavailable_ports = [int(portinfo['publicPort']) for portinfo in machine.space.portforwardings]
+            unavailable_ports = [int(portinfo['publicPort']) for portinfo in machine.space.portforwards]
             spaceport = 2200
             while True:
                 if spaceport not in unavailable_ports:
