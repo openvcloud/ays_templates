@@ -17,9 +17,12 @@ from rq import Queue
 import time
 import logging
 
-AYS_CORE_BP_TESTS_PATH = [j.sal.fs.joinPaths(j.sal.fs.getParent(j.sal.fs.getParent(__file__)), 'tests', 'bp_test_templates', 'core')]
+#AYS_CORE_BP_TESTS_PATH = [j.sal.fs.joinPaths(j.sal.fs.getParent(j.sal.fs.getParent(__file__)), 'tests', 'bp_test_templates', 'core')]
 
-AYS_NON_CORE_BP_TESTS_PATH = []
+AYS_NON_CORE_BP_TESTS_PATH = [j.sal.fs.joinPaths(j.sal.fs.getParent(j.sal.fs.getParent(__file__)), 'tests', 'test_blueprints', 'basic'),
+                              j.sal.fs.joinPaths(j.sal.fs.getParent(j.sal.fs.getParent(__file__)), 'tests', 'test_blueprints', 'advanced'),
+                              j.sal.fs.joinPaths(j.sal.fs.getParent(j.sal.fs.getParent(__file__)), 'tests', 'test_blueprints', 'extend')
+                             ]
 
 # AYS_DEFAULT_PLACEHOLDERS = ['URL', 'LOGIN', 'ACCOUNT', 'PASSWORD', 'LOCATION']
 AYS_TESTRUNNER_REPO_NAME = 'ays_testrunner'
@@ -562,7 +565,7 @@ class BaseRunner:
         try:
             backend_config = self._config.get('BACKEND_ENV', {})
             if backend_config:
-                ovc_cli = j.clients.openvcloud.get(url=backend_config.get('URL'), login=backend_config.get('LOGIN'), password=backend_config.get('PASSWORD'))
+                ovc_cli = j.clients.openvcloud.get(backend_config.get('APPID'), secret=backend_config.get('SECRET'), url=backend_config.get('URL'))
                 # DELETE ALL THE CREATED CLOUDSPACES
                 for cloudspace_info in ovc_cli.api.cloudapi.cloudspaces.list():
                     ovc_cli.api.cloudapi.cloudspaces.delete(cloudspaceId=cloudspace_info['id'])
@@ -749,6 +752,7 @@ class AYSTestRunner(BaseRunner):
         """
         super().__init__(name=name, config=config)
         self._default_bp_paths = AYS_NON_CORE_BP_TESTS_PATH
+        print(self._default_bp_paths)
 
 
 
@@ -816,6 +820,7 @@ class AYSTestRunnerFactory(object):
 
     @staticmethod
     def get(name, execution_type='seq', test_type='core', config=None):
+        import ipdb; ipdb.set_trace()
         if config is None:
             config = {}
         
