@@ -1,7 +1,6 @@
 g8client__example:
     url: <URL>
-    login: <LOGIN>
-    password: <PASSWORD>
+    jwt: <JWT>
     account: <ACCOUNT>
 
 uservdc__vm_user:

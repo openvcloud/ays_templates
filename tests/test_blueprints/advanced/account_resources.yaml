@@ -1,8 +1,7 @@
 # The test for this blueprint is not fully tested yet
 g8client__main:
     url: '{environment}'
-    login: '{username}'
-    password: '{password}'
+    jwt: '{jwt}'
     account: '{account}'
 
 vdc__cs1:

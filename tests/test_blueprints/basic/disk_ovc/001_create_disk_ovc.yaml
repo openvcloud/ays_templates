@@ -1,9 +1,8 @@
 # create/specify which virtual data center to use
 g8client__env:
     url: <URL>
-    login: <LOGIN>
-    password: <PASSWORD>
-    account: <ACCOUNT>
+    jwt: <JWT>
+    account: <Account>
 
 disk.ovc__testdisk:
     g8client: 'env'

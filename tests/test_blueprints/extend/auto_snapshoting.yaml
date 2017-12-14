@@ -1,11 +1,11 @@
-g8client__islam:
+g8client__testg8client:
     url: '{environment}'
     login: '{username}'
     password: '{password}'
 
 vdc__{random_vdc}:
     description: '{random}'
-    g8client: 'islam'
+    g8client: 'testg8client'
     account: '{account}'
     location: '{location}'
     uservdc:
@@ -25,7 +25,7 @@ autosnapshotting__{random_snap}:
 
 # 'QA SERVICE' (THE TEMPLATE SHOULD HAS THIS LINE)
 test_auto_snapshoting__{random}:
-   g8client: 'islam'
+   g8client: 'testg8client'
    autosnapshotting: {random_snap}
    node: {random_node}
 

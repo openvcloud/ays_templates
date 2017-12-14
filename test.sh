@@ -23,10 +23,15 @@ done
 # running testsuite
 echo "Running ays core tests"
 js9"""
-from ays_testrunner.template_testrunner import AYSTestRunnerFactory
+from ays_testrunner.testrunner import AYSTestRunnerFactory
 backend_config = {'URL': 'se-gen-1.demo.greenitglobe.com',
-                  'ACCOUNT': 'aystestrunner', 'LOCATION': '', 
+                  'ACCOUNT': 'aystestrunner', 'LOCATION': 'se-gen-1',
+                  'login': 'reem@itsyouonline', 'email': 'reem', 
                   'JWT': '***'}
-runner = AYSTestRunnerFactory.get(name='non-core', test_type='non-core', config={'BACKEND_ENV': backend_config, 'BACKEND_ENV_CLEANUP': True})
+runner = AYSTestRunnerFactory.get(name='non-core', test_type='non-core',
+                                  config={'BACKEND_ENV': backend_config, 'BACKEND_ENV_CLEANUP': True,
+                                          'bp_paths':['/opt/code/github/openvcloud/ays_templates/tests/test_blueprints/advanced',
+                                                      '/opt/code/github/openvcloud/ays_templates/tests/test_blueprints/basic',
+                                                      '/opt/code/github/openvcloud/ays_templates/tests/test_blueprints/extend']})
 runner.run()
 """

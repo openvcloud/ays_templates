@@ -1,12 +1,11 @@
-g8client__islam:
+g8client__testg8client:
   url: '{environment}'
-  login: '{username}'
-  password: '{password}'
+  jwt: '{JWT}'
   account: {random_account}
 
 account__{random_account}:
   description: '{random}'
-  g8client: 'islam'
+  g8client: 'testg8client'
   accountusers:
    - '{username}'
 
@@ -17,7 +16,7 @@ account__{random_account}:
 
 vdc__{random_vdc_1}:
   description: '{random}'
-  g8client: 'islam'
+  g8client: 'testg8client'
   account: '{random_account}'
   location: '{location}'
   uservdc:
@@ -29,7 +28,7 @@ vdc__{random_vdc_1}:
 
 vdc__{random_vdc_2}:
   description: '{random}'
-  g8client: 'islam'
+  g8client: 'testg8client'
   account: '{random_account}'
   location: '{location}'
   uservdc:
@@ -41,7 +40,7 @@ vdc__{random_vdc_2}:
 
 vdc__{random_vdc_3}:
   description: '{random}'
-  g8client: 'islam'
+  g8client: 'testg8client'
   account: '{random_account}'
   location: '{location}'
   uservdc:
@@ -57,7 +56,7 @@ test_create_account_cloudspace_with_specs__{random}:
     - '{random_vdc_2}'
     - '{random_vdc_3}'
   account: '{random_account}'
-  g8client: 'islam'
+  g8client: 'testg8client'
 
 actions:
    - action: 'install'

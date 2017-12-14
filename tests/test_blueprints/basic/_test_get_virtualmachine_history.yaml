@@ -1,15 +1,15 @@
 g8client__env:
-    url: '<url>'
+    url: '<URL>'
     login: '<login>'
     password: '<password>'
-    account: '<account>'
+    account: '<ACCOUNT>'
 
 
 vdc__vmhisAli:
     description: 'vdc for testing vm history'
     g8client: 'env'
-    account: '<account>'
-    location: '<location>'
+    account: '<ACCOUNT>'
+    location: '<LOCATION>'
 
 # create the vm.
 # expose ports 22. Map it to 2210.

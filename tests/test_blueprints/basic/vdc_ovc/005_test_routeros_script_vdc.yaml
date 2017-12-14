@@ -1,7 +1,6 @@
 g8client__env:
     url: '<URL>'
-    login: '<LOGIN>'
-    password: '<PASSWORD>'
+    jwt: '<JWT>'
     account: '<ACCOUNT>'
 
 vdc__conflictvdc:
