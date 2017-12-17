@@ -2,11 +2,7 @@
 g8client__env:
     url: <URL>
     jwt: <JWT>
-<<<<<<< HEAD
     account: <ACCOUNT>
-=======
-    account: <Account>
->>>>>>> 14ca0e3f5d932d75e671c79b44b53f0e9f4329ca
 
 disk.ovc__testdisk:
     g8client: 'env'
