@@ -1,4 +1,4 @@
-g8client__islam:
+g8client__testg8client:
     url: '{environment}'
     login: '{username}'
     password: '{password}'
@@ -6,7 +6,7 @@ g8client__islam:
 # create the vdc that will contain the vm of the cockpit_testing
 vdc__{random_vdc}:
     description: '{random}'
-    g8client: 'islam'
+    g8client: 'testg8client'
     account: '{account}'
     location: '{location}'
     uservdc:
@@ -19,7 +19,7 @@ vdc__{random_vdc}:
 # 'QA SERVICE' (THE TEMPLATE SHOULD HAS THIS LINE)
 test_create_cloudspace_with_specs__{random}:
    vdc: '{random_vdc}'
-   g8client: 'islam'
+   g8client: 'testg8client'
 
 actions:
    - action: 'install'

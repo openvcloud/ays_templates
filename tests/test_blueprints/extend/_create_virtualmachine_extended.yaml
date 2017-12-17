@@ -1,7 +1,6 @@
-g8client__islam:
+g8client__testerg8client:
     url: '{environment}'
-    login: '{username}'
-    password: '{password}'
+    jwt: '{JWT}'
 
 account__{random_account}:
     accountusers:
@@ -9,7 +8,7 @@ account__{random_account}:
 
 vdc__{random_vdc}:
     description: '{random}'
-    g8client: 'islam'
+    g8client: 'testerg8client'
     account: '{random_account}'
     location: '{location}'
     uservdc:
@@ -18,9 +17,9 @@ vdc__{random_vdc}:
 node.ovc__{random_node}:
     description: '{random}'
     vdc: '{random_vdc}'
-    os.image: '{randitem[Ubuntu 14.04 x64,Ubuntu 16.04 x64,Windows 2012r2 Standard]}'
-    bootdisk.size: {randitem[50,100,250,500,1000]}
-    sizeID: {randint=1,6}
+    os.image: 'Ubuntu 16.04 x64'
+    bootdisk.size: 250
+    sizeID: 2
     ports:
       - '20:100'
       - '50:200'
@@ -28,7 +27,7 @@ node.ovc__{random_node}:
 test_create_virtualmachine_extended__{random}:
    vdc: {random_vdc}
    node: {random_node}
-   g8client: 'islam'
+   g8client: 'testerg8client'
 
 actions:
    - action: 'install'

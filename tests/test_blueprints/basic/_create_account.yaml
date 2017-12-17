@@ -1,10 +1,9 @@
-g8client__islam:
+g8client__testg8client:
   url: '{environment}'
-  login: '{username}'
-  password: '{password}'
+  jwt: '{JWT}'
 
 uservdc__{random_user}:
-  g8client: 'islam'
+  g8client: 'testg8client'
   password: '{random_pw_1}'
   email: '{random}@e.com'
   groups:
@@ -16,7 +15,7 @@ uservdc__{random_user}:
 
 account__{random_account}:
     description: '{random}'
-    g8client: 'islam'
+    g8client: 'testg8client'
     accountusers:
      - '{username}'
      - '{random_user}'
@@ -28,7 +27,7 @@ account__{random_account}:
 
 test_create_account__{random}:
     account: '{random_account}'
-    g8client: 'islam'
+    g8client: 'testg8client'
 
 actions:
    - action: 'install'
