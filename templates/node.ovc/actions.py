@@ -128,7 +128,7 @@ def _configure_disks(service, machine, prefab):
 
     for machine_name, machine_id in machine_disks.items():
         if not any(machine_name == disk.model.dbobj.name for disk in disklist):
-            machine.detach_disk(machine_id)
+            machine.disk_detach(machine_id)
 
     rc, out, err = prefab.core.run("lsblk -J", die=False)
     if rc != 0:
