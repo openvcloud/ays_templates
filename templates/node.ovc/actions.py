@@ -14,10 +14,6 @@ def _get_cloud_space(service):
 def _create_machine(service, space):
     vdc = service.parent
     image_names = [i['name'] for i in space.images]
-    #make sure that SSH key is loaded
-    sshkey = service.producers['sshkey'][0]
-    key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
-    j.clients.ssh.load_ssh_key(key_path, True)
 
     if service.model.data.osImage not in image_names:
         raise j.exceptions.NotFound('Image %s not available for vdc %s' % (service.model.data.osImage, vdc.name))
@@ -28,8 +24,6 @@ def _create_machine(service, space):
                                    disksize=service.model.data.bootdiskSize,
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
                                    stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None,
-                                   sshkeyname=sshkey.name,
-                                   sshkeypath=key_path
                                    )
     return machine
 
@@ -266,6 +260,14 @@ def install(job):
         if not machine:
             service.logger.debug("Maching does not exist, creating it.")
             machine = _create_machine(service, space)
+
+        prefab = space._authorizeSSH(machine, service)
+
+        prefab.core.hostname = service.name  # make sure hostname is set
+
+        # remember the node in the local node configuration
+        j.tools.develop.nodes.nodeSet(service.name, addr=prefab.executor.sshclient.addr, port=prefab.executor.sshclient.port,
+                                    cat="openvcloud", description="deployment in openvcloud")
 
         # Configure Ports including SSH port if not defined
         service.logger.debug("Configure Ports including SSH port if not defined")
