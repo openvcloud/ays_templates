@@ -15,15 +15,20 @@ def _create_machine(service, space):
     vdc = service.parent
     image_names = [i['name'] for i in space.images]
 
+    sshkey = service.producers['sshkey'][0]
+    key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
+
     if service.model.data.osImage not in image_names:
         raise j.exceptions.NotFound('Image %s not available for vdc %s' % (service.model.data.osImage, vdc.name))
 
     machine = space.machine_create(name=service.name,
+                                   sshkeyname=sshkey.name,
                                    image=service.model.data.osImage,
                                    memsize=service.model.data.memory,
                                    disksize=service.model.data.bootdiskSize,
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
                                    stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None,
+                                   sshkeypath=key_path
                                    )
     return machine
 
@@ -262,16 +267,11 @@ def install(job):
             service.logger.debug("Maching does not exist, creating it.")
             machine = _create_machine(service, space)
 
-        space.createPortForward(machine)
+        sshkey = service.producers['sshkey'][0];
+        key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
+        j.clients.ssh.load_ssh_key(key_path, True)
 
-        space._authorizeSSH(machine, service)
-
-        prefab = machine.prefab
-        prefab.core.hostname = service.name  # make sure hostname is set
-
-        # remember the node in the local node configuration
-        j.tools.develop.nodes.nodeSet(service.name, addr=prefab.executor.sshclient.addr, port=prefab.executor.sshclient.port,
-                                    cat="openvcloud", description="deployment in openvcloud")
+        space.configure_machine(machine=machine, name=service.name, sshkey_name=sshkey.name, sshkey_path=key_path)
 
         # Configure Ports including SSH port if not defined
         service.logger.debug("Configure Ports including SSH port if not defined")
