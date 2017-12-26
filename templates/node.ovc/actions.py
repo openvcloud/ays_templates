@@ -261,8 +261,11 @@ def install(job):
             service.logger.debug("Maching does not exist, creating it.")
             machine = _create_machine(service, space)
 
-        prefab = space._authorizeSSH(machine, service)
+        space.createPortForward(machine)
 
+        space._authorizeSSH(machine, service)
+
+        prefab = machine.prefab
         prefab.core.hostname = service.name  # make sure hostname is set
 
         # remember the node in the local node configuration
