@@ -269,7 +269,6 @@ def install(job):
 
         sshkey = service.producers['sshkey'][0];
         key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
-        j.clients.ssh.load_ssh_key(key_path, True)
 
         space.configure_machine(machine=machine, name=service.name, sshkey_name=sshkey.name, sshkey_path=key_path)
 
