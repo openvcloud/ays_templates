@@ -62,7 +62,7 @@ def _configure_ports(service, machine):
             public_port = None
 
         if not skip:
-            machine.create_portforwarding(publicport=public_port, localport=local_port, protocol='tcp')
+            machine.portforward_create(publicport=public_port, localport=local_port, protocol='tcp')
 
     # Get all created ports forwarding (from current model + previously created if any)
     ports = []
@@ -99,10 +99,8 @@ def _ssh_authorize_root(service, machine, vm_info):
         raise j.exceptions.AYSNotFound("No sshkey service consumed. please consume an sshkey service")
     service.logger.info("Authorizing ssh key to machine {}".format(vm_info['name']))
     sshkey = service.producers['sshkey'][0]
-    key_path = j.sal.fs.joinPaths(sshkey.path, 'id_rsa')
-    password = vm_info['accounts'][0]['password'] if vm_info['accounts'][0]['password'] != '' else None
-    # used the login/password information from the node to first connect to the node and
-    # then authorize the sshkey for root
+    #make sure that SSH key is loaded
+    key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
 
     executor = j.tools.executor.getSSHBased(addr=service.model.data.ipPublic, port=service.model.data.sshPort,
                                           timeout=5, usecache=False)
@@ -113,7 +111,7 @@ def _ssh_authorize_root(service, machine, vm_info):
     sshport = machine.portforwards[0]['publicPort']
     sshclient = j.clients.ssh.get(
         addr=publicip, port=sshport, login=login, passwd=password, look_for_keys=False, timeout=300)
-    sshclient.SSHAuthorizeKey(sshkey.name)
+    sshclient.SSHAuthorizeKey(sshkey_name=sshkey.name, sshkey_path=key_path)
     service.model.data.sshAuthorized = True
     service.saveAll()
     return executor.prefab
@@ -258,14 +256,13 @@ def install(job):
         import requests
         import json
         import traceback
+
+        # import ipdb; ipdb.set_trace()
+
         service = job.service
         space = _get_cloud_space(service)
         # Get machine if already exists or create a new one
-        service.logger.debug("checking if machine is already created.")
-        machine = space.machines.get(service.name)
-        if not machine:
-            service.logger.debug("Maching does not exist, creating it.")
-            machine = _create_machine(service, space)
+        machine = _create_machine(service, space)
 
         sshkey = service.producers['sshkey'][0];
         key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
@@ -378,10 +375,10 @@ def processChange(job):
                 for public_port, local_port in to_remove:
                     if local_port == 22:
                         continue
-                    machine.delete_portforwarding(public_port)
+                    machine.portforward_delete(public_port)
 
                 for public_port, local_port in to_create:
-                    machine.create_portforwarding(
+                    machine.portforward_create(
                         publicport=public_port, localport=local_port, protocol='tcp'
                     )
 
@@ -652,7 +649,7 @@ def open_port(job):
         else:
             spaceport = public_port
 
-        machine.create_portforwarding(spaceport, requested_port)
+        machine.portforward_create(spaceport, requested_port)
 
     ports.add("%s:%s" % (spaceport, requested_port))
     service.model.data.ports = list(ports)
