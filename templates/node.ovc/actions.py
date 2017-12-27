@@ -14,21 +14,22 @@ def _get_cloud_space(service):
 def _create_machine(service, space):
     vdc = service.parent
     image_names = [i['name'] for i in space.images]
-    #make sure that SSH key is loaded
+
     sshkey = service.producers['sshkey'][0]
     key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
-    j.clients.ssh.load_ssh_key(key_path, True)
 
     if service.model.data.osImage not in image_names:
         raise j.exceptions.NotFound('Image %s not available for vdc %s' % (service.model.data.osImage, vdc.name))
+
     machine = space.machine_create(name=service.name,
+                                   sshkeyname=sshkey.name,
                                    image=service.model.data.osImage,
                                    memsize=service.model.data.memory,
                                    disksize=service.model.data.bootdiskSize,
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
                                    stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None,
-                                   sshkeyname=sshkey.name,
-                                   sshkeypath=key_path
+                                   sshkeypath=key_path,
+                                   ignore_name_exists=True
                                    )
     return machine
 
@@ -89,25 +90,29 @@ def _check_ssh_authorization(service, machine):
         # Authorize ssh key into the machine
         _, vm_info = machine.machineip_get()
         if vm_info['status'] not in ['HALTED', 'PAUSED']:
-            prefab = _ssh_authorize_root(service, vm_info)
+            prefab = _ssh_authorize_root(service, machine, vm_info)
             return prefab
     return False
 
 
-def _ssh_authorize_root(service, vm_info):
+def _ssh_authorize_root(service, machine, vm_info):
     if 'sshkey' not in service.producers:
         raise j.exceptions.AYSNotFound("No sshkey service consumed. please consume an sshkey service")
     service.logger.info("Authorizing ssh key to machine {}".format(vm_info['name']))
-
     sshkey = service.producers['sshkey'][0]
     #make sure that SSH key is loaded
     key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
-    j.clients.ssh.load_ssh_key(key_path, True)
 
     executor = j.tools.executor.getSSHBased(addr=service.model.data.ipPublic, port=service.model.data.sshPort,
                                           timeout=5, usecache=False)
-
-    executor.prefab.system.ssh.authorize("root", sshkey.model.data.keyPub)
+    machineip, machinedict = machine.machineip_get()
+    publicip = machine.space.model['publicipaddress']
+    login = machinedict['accounts'][0]['login']
+    password = machinedict['accounts'][0]['password']
+    sshport = machine.portforwards[0]['publicPort']
+    sshclient = j.clients.ssh.get(
+        addr=publicip, port=sshport, login=login, passwd=password, look_for_keys=False, timeout=300)
+    sshclient.SSHAuthorizeKey(sshkey_name=sshkey.name, sshkey_path=key_path)
     service.model.data.sshAuthorized = True
     service.saveAll()
     return executor.prefab
@@ -133,7 +138,7 @@ def _configure_disks(service, machine, prefab):
 
     for machine_name, machine_id in machine_disks.items():
         if not any(machine_name == disk.model.dbobj.name for disk in disklist):
-            machine.detach_disk(machine_id)
+            machine.disk_detach(machine_id)
 
     rc, out, err = prefab.core.run("lsblk -J", die=False)
     if rc != 0:
@@ -252,20 +257,29 @@ def install(job):
         import requests
         import json
         import traceback
+
+        # import ipdb; ipdb.set_trace()
+
         service = job.service
         space = _get_cloud_space(service)
         # Get machine if already exists or create a new one
-        machine = space.machines.get(service.name)
-        if not machine:
-            machine = _create_machine(service, space)
+        machine = _create_machine(service, space)
+
+        sshkey = service.producers['sshkey'][0];
+        key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
+
+        space.configure_machine(machine=machine, name=service.name, sshkey_name=sshkey.name, sshkey_path=key_path)
 
         # Configure Ports including SSH port if not defined
+        service.logger.debug("Configure Ports including SSH port if not defined")
         _configure_ports(service, machine)
 
         # register users acls
+        service.logger.debug("Authorizing user.")
         authorization_user(machine, service)
 
         # set machine id, ip, login data
+        service.logger.debug("set machine id, ip, login data")
         ip, vm_info = machine.machineip_get()
         if not ip:
             raise j.exceptions.RuntimeError('The machine %s does not get an IP ' % service.name)
@@ -275,12 +289,15 @@ def install(job):
         service.model.data.ipPrivate = ip
         service.model.data.sshLogin = vm_info['accounts'][0]['login']
         service.model.data.sshPassword = vm_info['accounts'][0]['password']
-        
+
         # Authorize ssh key into the machine
+        service.logger.debug("Authorizing ssh key into the machine.")
         prefab = _check_ssh_authorization(service, machine)
 
         # configure disks
+        service.logger.debug("configuring disks with prefab instance %s " % prefab)
         if prefab:
+            service.logger.debug("configuring disks.")
             _configure_disks(service, machine, prefab)
 
         _, vm_info = machine.machineip_get()
@@ -288,6 +305,7 @@ def install(job):
             requests.post(service.model.data.vmInfoCallback, headers={'Content-type': 'application/json'}, data=json.dumps(vm_info))
 
         # Save the service
+        service.logger.debug("save the service")
         service.saveAll()
     except Exception as e:
         trace = traceback.format_exc()
