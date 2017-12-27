@@ -28,7 +28,8 @@ def _create_machine(service, space):
                                    disksize=service.model.data.bootdiskSize,
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
                                    stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None,
-                                   sshkeypath=key_path
+                                   sshkeypath=key_path,
+                                   ignore_name_exists=True
                                    )
     return machine
 
@@ -101,7 +102,6 @@ def _ssh_authorize_root(service, machine, vm_info):
     sshkey = service.producers['sshkey'][0]
     #make sure that SSH key is loaded
     key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
-    j.clients.ssh.load_ssh_key(key_path, True)
 
     executor = j.tools.executor.getSSHBased(addr=service.model.data.ipPublic, port=service.model.data.sshPort,
                                           timeout=5, usecache=False)
@@ -112,7 +112,7 @@ def _ssh_authorize_root(service, machine, vm_info):
     sshport = machine.portforwards[0]['publicPort']
     sshclient = j.clients.ssh.get(
         addr=publicip, port=sshport, login=login, passwd=password, look_for_keys=False, timeout=300)
-    sshclient.SSHAuthorizeKey(sshkey.name)
+    sshclient.SSHAuthorizeKey(sshkey_name=sshkey.name, sshkey_path=key_path)
     service.model.data.sshAuthorized = True
     service.saveAll()
     return executor.prefab
@@ -257,14 +257,13 @@ def install(job):
         import requests
         import json
         import traceback
+
+        # import ipdb; ipdb.set_trace()
+
         service = job.service
         space = _get_cloud_space(service)
         # Get machine if already exists or create a new one
-        service.logger.debug("checking if machine is already created.")
-        machine = space.machines.get(service.name)
-        if not machine:
-            service.logger.debug("Maching does not exist, creating it.")
-            machine = _create_machine(service, space)
+        machine = _create_machine(service, space)
 
         sshkey = service.producers['sshkey'][0];
         key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
