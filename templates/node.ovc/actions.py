@@ -28,7 +28,8 @@ def _create_machine(service, space):
                                    disksize=service.model.data.bootdiskSize,
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
                                    stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None,
-                                   sshkeypath=key_path
+                                   sshkeypath=key_path,
+                                   ignore_name_exists=True
                                    )
     return machine
 
