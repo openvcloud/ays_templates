@@ -28,7 +28,7 @@ def _create_machine(service, space):
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
                                    stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None,
                                    sshkeyname=sshkey.name,
-                                   sshkeypath=key_path
+                                   sshkeypath=sshkey.path
                                    )
     return machine
 
@@ -89,32 +89,22 @@ def _check_ssh_authorization(service, machine):
         # Authorize ssh key into the machine
         _, vm_info = machine.machineip_get()
         if vm_info['status'] not in ['HALTED', 'PAUSED']:
-            prefab = _ssh_authorize_root(service, vm_info)
-            return prefab
+            if 'sshkey' not in service.producers:
+                raise j.exceptions.AYSNotFound("No sshkey service consumed. please consume an sshkey service")
+            service.logger.info("Authorizing ssh key to machine {}".format(vm_info['name']))
+
+            sshkey = service.producers['sshkey'][0]
+            machine = machine.space.configure_machine(machine=machine, sshkeyname=sshkey.name,
+                                                      sshkeypath=sshkey.path)
+            
+            service.model.data.sshAuthorized = True
+            service.saveAll()
+            return machine.prefab
     return False
 
 
-def _ssh_authorize_root(service, vm_info):
-    if 'sshkey' not in service.producers:
-        raise j.exceptions.AYSNotFound("No sshkey service consumed. please consume an sshkey service")
-    service.logger.info("Authorizing ssh key to machine {}".format(vm_info['name']))
-
-    sshkey = service.producers['sshkey'][0]
-    #make sure that SSH key is loaded
-    key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
-    j.clients.ssh.load_ssh_key(key_path, True)
-
-    executor = j.tools.executor.getSSHBased(addr=service.model.data.ipPublic, port=service.model.data.sshPort,
-                                          timeout=5, usecache=False)
-
-    executor.prefab.system.ssh.authorize("root", sshkey.model.data.keyPub)
-    service.model.data.sshAuthorized = True
-    service.saveAll()
-    return executor.prefab
-
-
 def _configure_disks(service, machine, prefab):
-    machine_disks = {disk['name']: disk['id'] for disk in machine.disks if disk['type'] != 'B' and 'autoscale' not in disk['name']}
+    machine_disks = {disk['name']: disk['id'] for disk in machine.disks if disk['type'] not in ('B', 'M') and 'autoscale' not in disk['name']}
     disklist = service.producers.get('disk', [])
     for disk in disklist:
         disk_name = disk.model.dbobj.name
@@ -131,9 +121,9 @@ def _configure_disks(service, machine, prefab):
                                   disk_args.totalIopsSecMax, disk_args.readIopsSecMax, disk_args.writeIopsSecMax,
                                   disk_args.sizeIopsSec, disk_args.maxIOPS)
 
-    for machine_name, machine_id in machine_disks.items():
-        if not any(machine_name == disk.model.dbobj.name for disk in disklist):
-            machine.detach_disk(machine_id)
+    for disk_name, disk_id in machine_disks.items():
+        if not any(disk_name == disk.model.dbobj.name for disk in disklist):
+            machine.disk_detach(disk_id)
 
     rc, out, err = prefab.core.run("lsblk -J", die=False)
     if rc != 0:
