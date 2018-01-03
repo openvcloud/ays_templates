@@ -28,7 +28,12 @@ def _create_machine(service, space):
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
                                    stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None,
                                    sshkeyname=sshkey.name,
+<<<<<<< HEAD
                                    sshkeypath=sshkey.path
+=======
+                                   sshkeypath=key_path,
+                                   description=service.model.data.description
+>>>>>>> 3fdc81ccea3dac00974ae2ab843bec352ccb6134
                                    )
     return machine
 
