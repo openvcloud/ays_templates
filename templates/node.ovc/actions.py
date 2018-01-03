@@ -256,9 +256,6 @@ def install(job):
         import requests
         import json
         import traceback
-
-        # import ipdb; ipdb.set_trace()
-
         service = job.service
         space = _get_cloud_space(service)
         # Get machine if already exists or create a new one
