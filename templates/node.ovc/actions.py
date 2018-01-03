@@ -22,14 +22,13 @@ def _create_machine(service, space):
         raise j.exceptions.NotFound('Image %s not available for vdc %s' % (service.model.data.osImage, vdc.name))
 
     machine = space.machine_create(name=service.name,
-                                   sshkeyname=sshkey.name,
                                    image=service.model.data.osImage,
                                    memsize=service.model.data.memory,
                                    disksize=service.model.data.bootdiskSize,
                                    sizeId=service.model.data.sizeID if service.model.data.sizeID >= 0 else None,
                                    stackId=service.model.data.stackID if service.model.data.stackID >= 0 else None,
+                                   sshkeyname=sshkey.name,
                                    sshkeypath=key_path,
-                                   ignore_name_exists=True
                                    )
     return machine
 
@@ -263,9 +262,11 @@ def install(job):
         service = job.service
         space = _get_cloud_space(service)
         # Get machine if already exists or create a new one
-        machine = _create_machine(service, space)
+        machine = space.machines.get(service.name)
+        if not machine:
+            machine = _create_machine(service, space)
 
-        sshkey = service.producers['sshkey'][0];
+        sshkey = service.producers['sshkey'][0]
         key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
 
         space.configure_machine(machine=machine, name=service.name, sshkey_name=sshkey.name, sshkey_path=key_path)
