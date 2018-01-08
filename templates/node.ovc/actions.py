@@ -260,12 +260,13 @@ def install(job):
         machine = space.machines.get(service.name)
         if not machine:
             machine = _create_machine(service, space)
-
-        sshkey = service.producers['sshkey'][0]
-        key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
-
-        if machine:
+        else:
+            sshkey = service.producers['sshkey'][0]
+            key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
             space.configure_machine(machine=machine, name=service.name, sshkey_name=sshkey.name, sshkey_path=key_path)
+
+
+
 
         # Configure Ports including SSH port if not defined
         service.logger.debug("Configure Ports including SSH port if not defined")
