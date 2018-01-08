@@ -102,8 +102,6 @@ def _ssh_authorize_root(service, machine, vm_info):
     #make sure that SSH key is loaded
     key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
 
-    executor = j.tools.executor.getSSHBased(addr=service.model.data.ipPublic, port=service.model.data.sshPort,
-                                          timeout=5, usecache=False)
     machineip, machinedict = machine.machineip_get()
     publicip = machine.space.model['publicipaddress']
     login = machinedict['accounts'][0]['login']
@@ -114,7 +112,7 @@ def _ssh_authorize_root(service, machine, vm_info):
     sshclient.SSHAuthorizeKey(sshkey_name=sshkey.name, sshkey_path=key_path)
     service.model.data.sshAuthorized = True
     service.saveAll()
-    return executor.prefab
+    return machine.prefab
 
 
 def _configure_disks(service, machine, prefab):
@@ -266,7 +264,8 @@ def install(job):
         sshkey = service.producers['sshkey'][0]
         key_path = j.sal.fs.joinPaths(sshkey.path, sshkey.name)
 
-        space.configure_machine(machine=machine, name=service.name, sshkey_name=sshkey.name, sshkey_path=key_path)
+        if machine:
+            space.configure_machine(machine=machine, name=service.name, sshkey_name=sshkey.name, sshkey_path=key_path)
 
         # Configure Ports including SSH port if not defined
         service.logger.debug("Configure Ports including SSH port if not defined")
