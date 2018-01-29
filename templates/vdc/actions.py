@@ -101,7 +101,7 @@ def install(job):
     service.model.save()
     authorization_user(space, service)
 
-    # update capacity incase cloudspace already existed update it
+    # update capacity in case cloudspace already existed
     space.model['maxMemoryCapacity'] = service.model.data.maxMemoryCapacity
     space.model['maxVDiskCapacity'] = service.model.data.maxDiskCapacity
     space.model['maxNumPublicIP'] = service.model.data.maxNumPublicIP
@@ -113,6 +113,9 @@ def install(job):
     timeout_limit = time.time() + 60
     while time.time() < timeout_limit:
         if status == 'DEPLOYED':
+            # add external network address to data
+            service.model.data.ipPublic = space.model['externalnetworkip']
+            service.model.save()
             break
         time.sleep(5)
         status = cl.api.cloudapi.cloudspaces.get(cloudspaceId=service.model.data.cloudspaceID)['status']
