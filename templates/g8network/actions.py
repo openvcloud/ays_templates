@@ -2,7 +2,8 @@ def install(job):
     service = job.service
     vdc = service.producers["vdc"][0]
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     acc = cl.account_get(vdc.model.data.account)
     # if space does not exist, it will create it
     space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)

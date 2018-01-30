@@ -25,7 +25,8 @@ def test_create(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromAYSService(g8client)
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
 
         vdc = service.producers['vdc'][0]
         vdc_id = vdc.model.data.cloudspaceID
@@ -52,7 +53,8 @@ def test_delete(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromAYSService(g8client)
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
 
         vdc = service.producers['vdc'][0]
         vdc_id = vdc.model.data.cloudspaceID
@@ -78,7 +80,8 @@ def test_enable(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromAYSService(g8client)
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
 
         vdc = service.producers['vdc'][0]
         vdc_id = vdc.model.data.cloudspaceID
@@ -105,7 +108,8 @@ def test_disable(job):
     service = job.service
     try:
         g8client = service.producers['g8client'][0]
-        client = j.clients.openvcloud.getFromAYSService(g8client)
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
 
         vdc = service.producers['vdc'][0]
         vdc_id = vdc.model.data.cloudspaceID
@@ -133,7 +137,8 @@ def test_routeros(job):
 
     service = job.service
     g8client = service.producers['g8client'][0]
-    client = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     vdc = service.producers['vdc'][0]
     vdc_id = vdc.model.data.cloudspaceID
     cloud_space = client.api.cloudapi.cloudspaces.get(cloudspaceId=vdc_id)

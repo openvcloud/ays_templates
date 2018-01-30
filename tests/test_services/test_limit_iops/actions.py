@@ -47,7 +47,8 @@ def test(job):
         log.info('Create another data disk (vdc) and set max_iops to 1000')
         vdc = vm.producers['vdc'][0]
         g8client = vdc.producers["g8client"][0]
-        client = j.clients.openvcloud.getFromAYSService(g8client)
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
         acc = client.account_get(vdc.model.data.account)
         space = acc.space_get(vdc.model.dbobj.name, vdc.model.data.location)
         machine = space.machines[vm.name]

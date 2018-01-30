@@ -7,7 +7,9 @@ def test_user_access(job):
     failures = []
     try:
         service.model.data.result = RESULT_OK
-        openv_client = j.clients.openvcloud.getFromAYSService(service.producers.get('g8client')[0])
+        g8client = service.producers.get('g8client')[0]
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        openv_client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
         vdc_srv = service.producers.get('vdc')[0]
         for vdc in openv_client.api.cloudapi.cloudspaces.list():
             if vdc['name'] == vdc_srv.name:
@@ -20,7 +22,7 @@ def test_user_access(job):
             if acl['userGroupId'] == configured_uservdc.name:
                 if acl['right'] != configured_uservdc.accesstype:
                     service.model.data.result = RESULT_FAILED %\
-                             ('User is not confgured correctly: Expected acl: [%s] Found acl: [%s]' % (configured_uservdc.accesstype, acl['right']))
+                             ('User is not configured correctly: Expected acl: [%s] Found acl: [%s]' % (configured_uservdc.accesstype, acl['right']))
     except Exception as e:
         service.model.data.result = RESULT_ERROR % (str(sys.exc_info()[:2]) + str(e))
     finally:
@@ -36,7 +38,9 @@ def test_delete_user_access(job):
     failures = []
     try:
         service.model.data.result = RESULT_OK
-        openv_client = j.clients.openvcloud.getFromAYSService(service.producers.get('g8client')[0])
+        g8client = service.producers.get('g8client')[0]
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        openv_client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
         vdc_srv = service.producers.get('vdc')[0]
         for vdc in openv_client.api.cloudapi.cloudspaces.list():
             if vdc['name'] == vdc_srv.name:

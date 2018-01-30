@@ -13,7 +13,8 @@ def install(job):
     accountid = service.model.data.accountid
 
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     netid = client.api.cloudbroker.iaas.addExternalNetwork(name=name, subnet=subnet, gateway=gateway, startip=startip, endip=endip, vlan=vlan, gid=gid, accountid=accountid)
     service.model.data.id = netid
     service.model.save()
@@ -23,5 +24,6 @@ def uninstall(job):
     # delete externalID
     netid = service.model.data.id
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     client.api.cloudbroker.iaas.deleteExternalNetwork(externalnetworkId=netid)

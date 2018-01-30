@@ -15,7 +15,8 @@ def snapshot(job):
         vdc = service.producers["vdc"][0]
         # Get given space resides in g8client
         g8client = vdc.producers["g8client"][0]
-        cl = j.clients.openvcloud.getFromAYSService(g8client)
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
         cl = cl.account_get(vdc.model.data.account)
         space = cl.space_get(vdc.name, vdc.model.data.location)
         for name, machine in space.machines.items():
@@ -33,7 +34,8 @@ def cleanup(job):
     vdc = service.producers["vdc"][0]
     # Get given space resides in g8client
     g8client = vdc.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     cl = cl.account_get(vdc.model.data.account)
     space = cl.space_get(vdc.name, vdc.model.data.location)
 

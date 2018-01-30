@@ -21,7 +21,8 @@ def test_create(job):
     try:
         disk_srv = job.service.aysrepo.serviceGet(role='disk', instance=model.data.disk[0])
         client_srv = disk_srv.producers.get('g8client')[0]
-        cli = j.clients.openvcloud.getFromAYSService(client_srv)
+        cli = j.clients.openvcloud.get(instance="{}_{}".format(client_srv.aysrepo.name, client_srv.instance),
+                                       create=False, die=True)
         account = cli.account_get(name=client_srv.model.data.account, create=False)
         disks = cli.api.cloudapi.disks.list(accountId=account.id, type=disk_srv.model.data.type)
         if _disk_found(disks, disk_srv):
@@ -57,7 +58,8 @@ def test_delete(job):
     try:
         disk_srv = job.service.aysrepo.serviceGet(role='disk', instance=model.data.disk[0])
         client_srv = disk_srv.producers.get('g8client')[0]
-        cli = j.clients.openvcloud.getFromAYSService(client_srv)
+        cli = j.clients.openvcloud.get(instance="{}_{}".format(client_srv.aysrepo.name, client_srv.instance),
+                                       create=False, die=True)
         account = cli.account_get(name=client_srv.model.data.account, create=False)
         disks = cli.api.cloudapi.disks.list(accountId=account.id, type=disk_srv.model.data.type)
         if _disk_found(disks, disk_srv):

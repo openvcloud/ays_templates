@@ -67,7 +67,8 @@ def install(job):
     if 'g8client' not in service.producers:
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue install of %s" % service)
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
 
     # Set limits
     # if account does not exist, it will create it
@@ -101,7 +102,8 @@ def processChange(job):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue processChange of %s" % service)
 
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     account = cl.account_get(name=service.model.dbobj.name, create=False)
 
     args = job.model.args
@@ -147,7 +149,8 @@ def uninstall(job):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue uninstall of %s" % service)
 
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     acc = cl.account_get(service.model.dbobj.name)
     acc.delete()
 
@@ -155,7 +158,8 @@ def uninstall(job):
 def list_disks(job):
     service = job.service
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     account = cl.account_get(name=service.model.dbobj.name)
     service.model.disks = account.disks
     service.save()
@@ -165,7 +169,8 @@ def get_consumption(job):
     import datetime
     service = job.service
     g8client = service.producers["g8client"][0]
-    cl = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     account = cl.account_get(name=service.model.dbobj.name)
     if not service.model.data.consumptionFrom and not service.model.data.consumptionTo:
         service.model.data.consumptionFrom = account.model['creationTime']

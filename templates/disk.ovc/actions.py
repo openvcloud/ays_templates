@@ -27,7 +27,8 @@ def init(job):
 def create(job):
     service = job.service
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     account = client.account_get(g8client.model.data.account, create=True)
     for loc in client.locations:
         if loc['name'] == service.model.data.location:
@@ -50,7 +51,8 @@ def create(job):
 def delete(job):
     service = job.service
     g8client = service.producers["g8client"][0]
-    client = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     account = client.account_get(g8client.model.data.account, create=True)
     for disk in account.disks:
         if disk['id'] == service.model.data.diskId:
@@ -76,7 +78,8 @@ def limit_io(job):
     service = job.service
     g8client = service.producers["g8client"][0]
     data = service.model.data
-    client = j.clients.openvcloud.getFromAYSService(g8client)
+    config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+    client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
     account = client.account_get(g8client.model.data.account, create=True)
     for disk in account.disks:
         if disk['id'] == service.model.data.diskId:

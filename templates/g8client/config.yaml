@@ -1,9 +1,5 @@
 doc:
   property:
-  - url: ''
-  - login: ''
+  - instance: ''
   - account: ''
-  - password: ''
-  - port: ''
-  - jwt: ''
 recurring: []

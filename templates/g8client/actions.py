@@ -3,15 +3,8 @@ from js9 import j
 
 def input(job):
     args = job.model.args
-    if "account" not in args or args["account"].strip() == "":
-        args['account'] = args["login"]
-
-    login = args.get('login', '')
-    password = args.get('password', '')
-    jwt = args.get('jwt', '')
-    if login == '' and password == '' and jwt == '':
-        raise j.exceptions.Input("Either username/password or jwt should be entered for %s" % job.service)
-
+    if not args.get("account") or not args.get("instance"):
+        raise j.exceptions.Input("You need to input account and instance arguments %s" % job.service)
     return args
 
 

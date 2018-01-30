@@ -7,7 +7,9 @@ def test_user_access(job):
     failures = []
     try:
         service.model.data.result = RESULT_OK
-        openv_client = j.clients.openvcloud.getFromAYSService(service.producers.get('g8client')[0])
+        g8client = service.producers.get('g8client')[0]
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        openv_client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
         node_srv = service.producers.get('node')[0]
         vdc_srv = node_srv.producers.get('vdc')[0]
         for vdc in openv_client.api.cloudapi.cloudspaces.list():
@@ -45,7 +47,9 @@ def test_delete_user_access(job):
     failures = []
     try:
         service.model.data.result = RESULT_OK
-        openv_client = j.clients.openvcloud.getFromAYSService(service.producers.get('g8client')[0])
+        g8client = service.producers.get('g8client')[0]
+        config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
+        openv_client = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
         node_srv = service.producers.get('node')[0]
         vdc_srv = node_srv.producers.get('vdc')[0]
         for vdc in openv_client.api.cloudapi.cloudspaces.list():
