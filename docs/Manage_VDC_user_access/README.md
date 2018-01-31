@@ -28,11 +28,10 @@ The second user in this blueprint, `{username_of_other_user}`, represents any ot
 
 This blueprint requires that `{environment}` and both the `{username_of_new_user}` and `{username_of_other_user}` are already initialized in the same AYS repository. If not the case you can add them into the same blueprint, or first execute one or more separate blueprint defining these AYS services:
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  login: '{login}'
-  password: '{password}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 uservdc__{username_of_new_user}:
@@ -64,12 +63,11 @@ vi blueprints/vdc.yaml
 ```
 
 Here's the definition in one blueprint, including a `actions` section:
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__gen:
-    url: 'du-conv-2.demo.greenitglobe.com'
-    login: '****'
-    password: '****'
-    account: '****'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__testvdc:
     g8client: 'gen'

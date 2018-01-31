@@ -132,11 +132,10 @@ It also shows the time when the `uninstall` action was executed in the value of 
 ```
 
 In case the VDC is not yet initialized in your repository, use following blueprint instead:
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  login: '{login}'
-  password: '{password}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 vdc__{vdc-name}:

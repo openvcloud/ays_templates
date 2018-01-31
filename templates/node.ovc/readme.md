@@ -62,12 +62,12 @@ Using process change it is possible to add, remove and update user access to mac
 For information about the different access rights check docs at [openvcloud](https://github.com/0-complexity/openvcloud/blob/2.1.7/docs/EndUserPortal/Authorization/AuthorizationModel.md).
 
 ## Example for creating machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
+
 
 vdc__vdcname:
     description: 'vdc for demo'
@@ -94,12 +94,11 @@ actions:
 ```
 
 ## Example for deleting machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -113,12 +112,11 @@ actions:
 ```
 
 ## Example for stopping machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -132,12 +130,11 @@ actions:
 ```
 
 ## Example for starting machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -151,12 +148,11 @@ actions:
 ```
 
 ## Example for pausing machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -170,12 +166,11 @@ actions:
 ```
 
 ## Example for resuming machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -189,12 +184,11 @@ actions:
 ```
 
 ## Example for restarting machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -208,12 +202,11 @@ actions:
 ```
 
 ## Example for resetting machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -230,12 +223,11 @@ actions:
 
 Executing the following blueprint will create a clone of the machine `demo` with name `demo_clone` in the same cloudspace.
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -274,11 +266,11 @@ node.ovc__demo:
 
 ## Example for getting machine history
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
+```yaml
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -291,12 +283,11 @@ actions:
 ```
 
 ## Example for attaching machine to external network
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -309,12 +300,11 @@ actions:
 ```
 
 ## Example for detaching machine from external network
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -327,12 +317,11 @@ actions:
 ```
 
 ## Example for listing snapshots of a machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -349,12 +338,11 @@ actions:
 ```
 
 ## Example for taking snapshot of a machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -371,12 +359,11 @@ actions:
 ```
 
 ## Example for deleting snapshot of a machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'
@@ -394,12 +381,11 @@ actions:
 ```
 
 ## Example for rollbacking snapshot of a machine
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdcname:
     location: '<location>'

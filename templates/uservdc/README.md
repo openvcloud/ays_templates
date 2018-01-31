@@ -14,12 +14,11 @@ This template represents a user on an environment. If the user doesn't exist it 
 
 ## Example
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__example:
-    url: '<url of the environment>'
-    login: '<username>'
-    password: '<password>'
-    account: '<account name>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 uservdc__ex:
     password: '<password>'

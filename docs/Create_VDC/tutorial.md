@@ -77,7 +77,7 @@ ACCOUNT="..."
 curl -X POST \
      -v \
      -H "Content-Type: application/json" \
-     -d '{"name":"cl.yaml","content":"g8client__cl:\n  url: '$G8_URL'\n  login: '$LOGIN'\n  password: '$PASSWORD'\n  account: '$ACCOUNT'"}' \
+     -d '{"name":"cl.yaml","content":"g8client__cl:\n  instance: main\n account: '$ACCOUNT'"}' \
      http://$BASE_URL:$AYS_PORT/ays/repository/$REPO_NAME/blueprint
 ```
 

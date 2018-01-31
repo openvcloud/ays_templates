@@ -8,11 +8,10 @@ Two options:
 ## Change an existing blueprint
 
 Here's the `vdc.yaml` blueprint that will defines a VDC with unlimited resources:
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__cl:
-  url: '{url}'
-  login: '{login}'
-  password: '{password}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 vdc__{vdc}:

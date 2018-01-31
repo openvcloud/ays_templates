@@ -1,5 +1,6 @@
 ## Working with OpenvCloud Templates
 
+* [Configure OpenVCloud client](OVC_Client/README.md)
 * [Create a New OpenvCloud User](Add_user/README.md)
 * [Create a New OpenvCloud Account](Create_account/README.md)
 * [Manage User Access to an Account](Manage_account_user_access/README.md)

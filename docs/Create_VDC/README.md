@@ -14,11 +14,10 @@ For creating a virtual datacenter (VDC) use the **vdc** template, available here
 
 ## Minimal Blueprint
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  login: '{login}'
-  password: '{password}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 vdc__{vdc-name}:
@@ -40,11 +39,10 @@ The full blueprint includes additional sections for following AYS templates:
   - Explicitly including an `account` section allows you to create a new account and/or grant and revoke user access to the specified account, for more details see [Create a New OpenvCloud Account](../Create_account/README.md) and [Manage Account User Access](../Manage_account_user_access/README.md)
 
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  login: '{login}'
-  password: '{password}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 uservdc__{username1}:
@@ -135,12 +133,11 @@ cloudspaceID = type:int default:0
 
 Here's an example blueprint for creating a VDC:
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__cl:
-  url: 'be-gen-1.demo.greenitglobe.com'
-  login: '***'
-  password: '***'
-  account: 'demo'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__myvdc:
   g8client: 'cl'
@@ -169,12 +166,11 @@ vi blueprint blueprints/$VDC_NAME.yaml
 ```
 
 Provide following blueprint to create `vdc1` in the G8 environment identified by `env`:
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-  url: 'be-gen-1.demo.greenitglobe.com'
-  login: '***'
-  password: '***'
-  account: '***'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdc1:
   g8client: 'env'
@@ -436,7 +432,7 @@ curl -X POST \
      -v \
      -H "Authorization: bearer $JWT" \
      -H "Content-Type: application/json" \
-     -d '{"name":"cl.yaml","content":"g8client__cl:\n  url: '$G8_URL'\n  login: '$LOGIN'\n  password: '$PASSWORD'\n  account: '$ACCOUNT'"}' \
+     -d '{"name":"cl.yaml","content":"g8client__cl:\n  instance: main\n  account: '$ACCOUNT'"}' \
      https://$BASE_URL:$AYS_PORT/ays/repository/$REPO_NAME/blueprint
 ```
 

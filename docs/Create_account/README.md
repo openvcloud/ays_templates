@@ -4,10 +4,10 @@ For creating an account use the **account** template, available here: https://gi
 
 **Minimal blueprint**:
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  jwt: '{jwt}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 account__{account-name}:
@@ -23,10 +23,10 @@ actions:
 
 **Full blueprint**:
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  jwt: '{jwt}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 account__{account-name}:

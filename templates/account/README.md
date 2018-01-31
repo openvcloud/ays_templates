@@ -50,11 +50,11 @@ For information about the different access rights check docs at [openvcloud](htt
 
 ## Example for creating an account
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-  url: '<env_url>'
-  login: '<username>'
-  password: '<password>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 uservdc__<username>:
 
@@ -126,12 +126,12 @@ account__acc:
 
 ## Example for listing disks associated with account:
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
-g8client__env:
-    url: '<env-url>'
-    login: '<login user>'
-    password: '<login password>'
 
 account__account1:
 
@@ -146,12 +146,11 @@ actions:
 
 ## Example for getting consumption info
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-
-g8client__env:
-  url: '<env-url>'
-  login: '<login user>'
-  password: '<login password>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 account__acc:
   description: 'test account'

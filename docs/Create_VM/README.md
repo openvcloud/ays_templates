@@ -12,11 +12,10 @@ For creating a virtual machine use the **node.ovc** template, available here: ht
 <a id="minimal-blueprint"></a>
 ## Minimal Blueprint
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  login: '{login}'
-  password: '{password}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 vdc__{vdc-name}:
@@ -36,11 +35,10 @@ actions:
 <a id="full-blueprint"></a>
 ## Full blueprint
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  login: '{login}'
-  password: '{password}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 vdcfarm__{vdcfarm}:
@@ -78,12 +76,11 @@ actions:
 
 The below blueprint will create virtual machine (`myvm1`) with one data disk (`mydisk1`) of 500 GB that is limited to 2000 IOPS:
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__cl:
-  url: 'be-gen-1.demo.greenitglobe.com'
-  login: '****'
-  password: '****'
-  account: '****'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__vdctest1:
   g8client: 'cl'

@@ -11,12 +11,10 @@ Alternatively you can explicitly register an ItsYou.online user as a new OpenvCl
 
 <a id="minimal-blueprint"></a>
 ## Blueprint
-
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 g8client__{environment}:
-  url: '{url}'
-  login: '{login}'
-  password: '{password}'
+  instance: '{ovc_config_instance(i.e. main)}'
   account: '{account}'
 
 uservdc__{username}:

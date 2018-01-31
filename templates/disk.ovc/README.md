@@ -30,12 +30,11 @@ This actor template represents a disk in ovc to be used later on by other servic
 Disk name will be service name.
 
 ## Example for creating disks
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 disk.ovc__disk1:
     size: <disk size>
@@ -56,12 +55,11 @@ actions:
 ```
 
 ## Example for deleting disks
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 disk.ovc__disk1:
 
@@ -78,12 +76,11 @@ actions:
 
 ## Example for limit IO for disks you can only limit disks that are attached to a vm, which is done using node.ovc service.
 (note that the disk MUST be attached to a machine)
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__env:
-    url: '<env_url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 disk.ovc__disk1:
     maxIOPS: 100
@@ -102,16 +99,13 @@ actions:
 ```
 
 ## Example for using disk with other services:
-
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
 sshkey__demo:
 
-g8client__env1:
-    # url: 'du-conv-3.demo.greenitglobe.com'
-    url: '<env url>'
-    login: '<login>'
-    password: '<password>'
-    account: '<account name>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdcfarm__vdcfarm1:
 

@@ -42,12 +42,11 @@ The `g8client` and `account` services need to be consumed by the `vdc` service(s
 
 For the creation of the vdc the action specified is install, to delete the vdc action uninstall needs to be specified in the `actions` parameter as seen in the second example below.
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__example:
-    url: '<url of the environment>'
-    login: '<username>'
-    password: '<password>'
-    account: '<account name>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 uservdc__usertest:
     password: 'test1234'
@@ -82,12 +81,11 @@ actions:
 
 ## Example for Deleting VDC
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__example:
-    url: '<url of the environment>'
-    login: '<username>'
-    password: '<password>'
-    account: '<account name>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__cs2:
     location: '<name of the environment>'
@@ -98,12 +96,11 @@ actions:
 
 ## Example for disabling VDC
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__example:
-    url: '<url of the environment>'
-    login: '<username>'
-    password: '<password>'
-    account: '<account name>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__cs2:
     location: '<name of the environment>'
@@ -114,12 +111,11 @@ actions:
 
 ## Example for enabling VDC
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__example:
-    url: '<url of the environment>'
-    login: '<username>'
-    password: '<password>'
-    account: '<account name>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__cs2:
     location: '<name of the environment>'
@@ -130,12 +126,11 @@ actions:
 
 ## Example for executing routeros script on VDC
 
+* You will need to configure OVC client firstly: [docs](https://github.com/openvcloud/ays_templates/blob/master/docs/OVC_Client/README.md)
 ```yaml
-g8client__example:
-    url: '<url of the environment>'
-    login: '<username>'
-    password: '<password>'
-    account: '<account name>'
+g8client__{environment}:
+  instance: '{ovc_config_instance(i.e. main)}'
+  account: '{account}'
 
 vdc__cs2:
     location: '<name of the environment>'
