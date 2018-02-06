@@ -303,6 +303,7 @@ def install(job):
         _, vm_info = machine.machineip_get()
         if service.model.data.vmInfoCallback:
             requests.post(service.model.data.vmInfoCallback, headers={'Content-type': 'application/json'}, data=json.dumps(vm_info))
+            service.logger.info("Callback to {} executed successfully".format(service.model.data.vmInfoCallback))
 
         # Save the service
         service.logger.debug("save the service")
@@ -311,6 +312,7 @@ def install(job):
         trace = traceback.format_exc()
         if service.model.data.vmInfoCallback:
             requests.post(service.model.data.vmInfoCallback, headers={'Content-type': 'application/json'}, data=json.dumps({'traceback': trace}))
+            service.logger.error("Callback to {} failed".format(service.model.data.vmInfoCallback))
         raise e
 
 
