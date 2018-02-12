@@ -1,6 +1,6 @@
 test_add_user_to_cloudspace__useraccess:
    vdc: cloudspace_user
-   g8client: env
+   g8client: aystestrunner
 
 
 actions:

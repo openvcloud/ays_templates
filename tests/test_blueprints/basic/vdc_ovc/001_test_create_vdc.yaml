@@ -1,17 +1,15 @@
-g8client__env:
-    url: <URL>
-    login: <LOGIN>
-    password: <PASSWORD>
+g8client__aystestrunner:
+    instance: 'aystestrunner'
     account: <ACCOUNT>
 
 vdc__testcreatevdc:
-    g8client: env
+    g8client: aystestrunner
     account: <ACCOUNT>
     location: <LOCATION>
 
 test_vdc__testcreatevdc:
     vdc: testcreatevdc
-    g8client: env
+    g8client: aystestrunner
 
 actions:
   - action: install

@@ -1,7 +1,5 @@
-g8client__example:
-    url: <URL>
-    login: <LOGIN>
-    password: <PASSWORD>
+g8client__aystestrunner:
+    instance: 'aystestrunner'
     account: <ACCOUNT>
 
 uservdc__vm_user:
@@ -9,11 +7,11 @@ uservdc__vm_user:
     email: 'vm_user@gig.tech'
     groups:
       - user
-    g8client: 'example'
+    g8client: 'aystestrunner'
 
 vdc__vm_user:
     description: 'test user access to vm'
-    g8client: 'example'
+    g8client: 'aystestrunner'
     account: <ACCOUNT>
     location: <LOCATION>
     allowedVMSizes:

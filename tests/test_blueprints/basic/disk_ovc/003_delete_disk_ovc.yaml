@@ -1,12 +1,10 @@
 # create/specify which virtual data center to use
-g8client__env:
-    url: <URL>
-    login: <LOGIN>
-    password: <PASSWORD>
+g8client__aystestrunner:
+    instance: aystestrunner
     account: <ACCOUNT>
 
 disk.ovc__testdisk:
-    g8client: 'env'
+    g8client: 'aystestrunner'
     devicename: 'Test Disk'
     description: "Test Desc"
     type: "D"
@@ -16,7 +14,7 @@ actions:
 
   - action: install
     actor: g8client
-    service: env
+    service: aystestrunner
 
   - action: delete
     actor: disk.ovc

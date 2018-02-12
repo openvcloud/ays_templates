@@ -4,7 +4,7 @@ node.ovc__testnodeovc:
 
 test_node_ovc__testnodeovcdetachdisk:
     node: testnodeovc
-    g8client: env
+    g8client: aystestrunner
     vdc: testnodeovc
     
 actions:

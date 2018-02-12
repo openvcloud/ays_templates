@@ -1,6 +1,6 @@
 test_add_user_to_vm__useraccess:
    node: useraccess
-   g8client: example
+   g8client: aystestrunner
 
 
 actions:
