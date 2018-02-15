@@ -11,59 +11,34 @@ def init_actions_(service, args):
     }
 
 
-def authenticate(g8client):
-    import requests
-    url = 'https://' + g8client.model.data.url
-    username = g8client.model.data.login
-    password = g8client.model.data.password
-
-    login_url = url + '/restmachine/system/usermanager/authenticate'
-    credential = {'name': username,
-                  'secret': password}
-
-    session = requests.Session()
-    session.post(url=login_url, data=credential)
-    return session
-
-
 def test(job):
     import sys, time
     service = job.service
+    cl = None
+    acc = None
+    space = None
     try:
         g8client = service.producers['g8client'][0]
-        url = 'https://' + g8client.model.data.url
-        session = authenticate(g8client)
 
         account = service.producers['account'][0]
-        accountData = account.model.data
+        account_data = account.model.data
         config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
         cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
         acc = cl.account_get(account.model.dbobj.name)
-        space = acc.space_get('%sVdcConsumption' % account.model.dbobj.name, g8client.model.data.url.split('.')[0])
+        space = acc.space_get('%sVdcConsumption' % account.model.dbobj.name, cl.config.data['address'].split('.')[0])
         while space.model['status'] != 'DEPLOYED':
             time.sleep(3)
-            space = acc.space_get('%sVdcConsumption' % account.model.dbobj.name, g8client.model.data.url.split('.')[0])
-        API_URL = url + '/restmachine/cloudapi/accounts/getConsumption?accountId={id}&start={start}&end={end}'.format(id=accountData.accountID,
-                                                                                                                      start=accountData.consumptionFrom,
-                                                                                                                      end=accountData.consumptionTo)
+            space = acc.space_get('%sVdcConsumption' % account.model.dbobj.name, cl.config.data['address'].split('.')[0])
+        actual_consumption = acc.get_consumption(start=account_data.consumptionFrom, end=account_data.consumptionTo)
 
-        response = session.get(url=API_URL)
-        if account.model.data.consumptionData == response.content:
+        if account.model.data.consumptionData == actual_consumption:
             service.model.data.result = 'OK : test_create_accounts_with_specs'
         else:
             service.model.data.result = 'FAILED : test_create_accounts_with_specs'
     except:
         service.model.data.result = 'ERROR :  %s %s' % ('test_create_accounts_with_specs', str(sys.exc_info()[:2]))
     finally:
-        if 'g8client' in service.producers and 'account' in service.producers:
-            session = authenticate(service.producers['g8client'][0])
-            account = service.producers['account'][0]
-            config_instance = "{}_{}".format(g8client.aysrepo.name, g8client.model.data.instance)
-            cl = j.clients.openvcloud.get(instance=config_instance, create=False, die=True, sshkey_path="/root/.ssh/ays_repos_key")
-            acc = cl.account_get(account.model.dbobj.name)
-            space = acc.space_get('%sVdcConsumption' % account.model.dbobj.name, g8client.model.data.url.split('.')[0])
+        if space is not None:
             space.delete()
-            API_URL = 'https://%s/restmachine/cloudapi/accounts/delete' % g8client.model.data.url
-            API_BODY = {'accountId': account.model.data.accountID}
-            session.post(url=API_URL, data=API_BODY)
+            acc.delete()
     service.save()

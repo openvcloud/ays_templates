@@ -22,8 +22,4 @@ else
     sudo -HE bash -c "source /opt/code/github/jumpscale/bash/zlibs.sh; ZKeysLoad; container 'pip install -e /opt/code/github/jumpscale/ays9'"
 fi
 
-# Dump the environment variables as json file in a the container cfg dir
-sudo -HE bash -c "python -c 'import json, os;print(json.dumps({\"BACKEND_ENV\": dict([(key, value) for key, value in os.environ.items() if key.startswith(\"BACKEND_\")])}))' > ~/js9host/cfg/ays_testrunner.json"
-
-# Run tests
-sudo -HE bash -c "ssh -tA  root@localhost -p 2222 \"cd /opt/code/github/jumpscale/ays9; /bin/bash test.sh $TRAVIS_EVENT_TYPE\""
+# we need to figure out how to reach our backend env from travis instances and thren run how to run these tests.

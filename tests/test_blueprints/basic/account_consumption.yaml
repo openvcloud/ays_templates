@@ -1,13 +1,12 @@
-g8client__env:
-  url: <URL>
-  login: <LOGIN>
-  password: <PASSWORD>
+g8client__aystestrunner:
+  account: 'testaccount'
+  instance: 'aystestrunner'
 
 account__testaccount:
-  g8client: 'env'
+  g8client: 'aystestrunner'
 
 test_account_consumption__test:
-  g8client: env
+  g8client: aystestrunner
   account: testaccount
 
 actions:

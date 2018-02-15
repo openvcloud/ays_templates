@@ -1,8 +1,4 @@
-g8client__env:
-    url: '<URL>'
-    login: '<LOGIN>'
-    password: '<PASSWORD>'
-    account: '<ACCOUNT>'
+g8client__aystestrunner:
 
 vdc__conflictvdc:
     location: '<LOCATION>'
@@ -10,7 +6,7 @@ vdc__conflictvdc:
 
 test_vdc__testrouteros:
     vdc: testcreatevdc
-    g8client: env
+    g8client: aystestrunner
 
 actions:
   - action: execute_routeros_script

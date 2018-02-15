@@ -1,10 +1,10 @@
-g8client__env:
+g8client__aystestrunner:
 
 vdc__testcreatevdc:
 
 test_vdc__testdisablevdc:
     vdc: testcreatevdc
-    g8client: env
+    g8client: aystestrunner
     
 actions:
   - action: disable
