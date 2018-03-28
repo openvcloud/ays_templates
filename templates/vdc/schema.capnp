@@ -1,5 +1,5 @@
 
-@0xef6aaa2a895e7f18;
+@0xadb4de77fe21b184;
 struct Schema {
 	description @0 :Text;
 	vdcfarm @1 :Text;
@@ -17,6 +17,7 @@ struct Schema {
 	maxNetworkPeerTransfer @13 :Int64 = -1;
 	disabled @14 :Bool = false;
 	script @15 :Text;
+	ipPublic @16 :Text;
 
 	struct UserVdcEntry {
 		name @0 :Text;
