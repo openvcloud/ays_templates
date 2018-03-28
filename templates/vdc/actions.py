@@ -21,6 +21,11 @@ def init(job):
         raise j.exceptions.AYSNotFound("No producer g8client found. Cannot continue init of %s" % service)
     g8client = service.producers["g8client"][0]
 
+    cl = j.clients.openvcloud.getFromAYSService(g8client)
+    locations = [loc['name'] for loc in cl.locations]
+    if service.model.data.location not in locations:
+        raise j.exceptions.Input("Location value is not valid")
+
     users = service.model.data.uservdc
     for user in users:
         uservdc = service.aysrepo.serviceGet('uservdc', user.name)
